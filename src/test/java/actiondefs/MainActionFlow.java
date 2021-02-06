@@ -38,7 +38,7 @@ public class MainActionFlow {
 	String templateUrl;
 	String templateString;
 	String getGroups;
-	String getGroupString ;
+	String getGroupString;
 	FileSourceViewModel file;
 	String groupNameEnter = "Palani";
 	String path = System.getProperty("user.dir");
@@ -53,13 +53,13 @@ public class MainActionFlow {
 	List<String> getlistTextValueinGraphPage = new ArrayList<String>();
 	List<String> getlistTextValueinMainLabel = new ArrayList<String>();
 	List<GroupTemplateViewModel> ListOfGroups;
-    List<TemplateViewModel> listOfTemplates;
+	List<TemplateViewModel> listOfTemplates;
 
 	List<WebElement> selectedSingleSizeList = new ArrayList<WebElement>();
 	List<WebElement> selectedSizeList = new ArrayList<WebElement>();
 
 	List<FileSourceViewModel> allFilesOfFileSource = new ArrayList<FileSourceViewModel>();
-    List<TemplateViewModel> allFilesOfTemplate = new ArrayList<TemplateViewModel>();
+	List<TemplateViewModel> allFilesOfTemplate = new ArrayList<TemplateViewModel>();
 
 	boolean isEqual;
 
@@ -133,30 +133,31 @@ public class MainActionFlow {
 		// System.out.println("Driver Closed");
 	}
 
-	public void enter_whatsappGroupName() throws InterruptedException {
+	public void enter_whatsappGroupName(String groupName) throws InterruptedException {
 		WebDriverWait wait = new WebDriverWait(driver, 5000);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(groupNameSelector));
-		driver.findElement((groupNameSelector)).sendKeys(groupNameEnter);
+		driver.findElement((groupNameSelector)).clear();
+		driver.findElement((groupNameSelector)).sendKeys(groupName);
 
 	}
 
-	public void clickSearchedGroup() throws InterruptedException {
-		try{
-		WebDriverWait wait = new WebDriverWait(driver, 5000);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(
-				By.xpath("//div[@role='option']//div//div//div//div//span[@title='" + groupNameEnter + "']")));
-		driver.findElement(By.xpath("//div[@role='option']//div//div//div//div//span[@title='" + groupNameEnter + "']"))
-				.click();
-		}
-		catch (Exception e) {
+	public void clickSearchedGroup(String groupName) throws InterruptedException {
+		try {
+			WebDriverWait wait = new WebDriverWait(driver, 5000);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(
+					By.xpath("//div[@role='option']//div//div//div//div//span[@title='" + groupName + "']")));
+			driver.findElement(By.xpath("//div[@role='option']//div//div//div//div//span[@title='" + groupName + "']"))
+					.click();
+		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 	}
 
-	public void text_message_typeSpace() throws InterruptedException {
+	public void text_message_typeSpace(String textValue) throws InterruptedException {
 		WebDriverWait wait = new WebDriverWait(driver, 5000);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(send));
-		driver.findElement(textmessageplace).sendKeys("Testing via selenium automation");
+		driver.findElement(textmessageplace).clear();
+		driver.findElement(textmessageplace).sendKeys(textValue);
 
 	}
 
@@ -237,33 +238,33 @@ public class MainActionFlow {
 		System.out.println(ParticipantValue);
 	}
 
-	public void getClusterId(String BaseUrl,String mobileNumber){
-		
+	public void getClusterId(String BaseUrl, String mobileNumber) {
+
 		clusterUrl = BaseUrl + "/GroupAdmin/getClusterId/" + mobileNumber;
-        cluserId = ApiAccessing_obj.apiGetProcessing(clusterUrl);
-        System.out.println("ClusterId" + " = " + cluserId);
+		cluserId = ApiAccessing_obj.apiGetProcessing(clusterUrl);
+		System.out.println("ClusterId" + " = " + cluserId);
 
 	}
 
-	public void getTemplateData(String BaseUrl,String mobileNumber){
+	public void getTemplateData(String BaseUrl, String mobileNumber) {
 
 		String templateUrl = BaseUrl + "/Template/getByMobileNumber/" + mobileNumber;
-        String templateString = ApiAccessing_obj.apiGetProcessing(templateUrl);
+		String templateString = ApiAccessing_obj.apiGetProcessing(templateUrl);
 		System.out.println("templateString" + " = " + templateString);
 
 		listOfTemplates = gson.fromJson(templateString, new TypeToken<List<TemplateViewModel>>() {
-        }.getType());
+		}.getType());
 
 		for (TemplateViewModel templateViewModel : listOfTemplates) {
 
-            allFilesOfTemplate.add(templateViewModel);
-            for (FileSourceViewModel filesoruce : templateViewModel.fileSourceViewModels) {
-                allFilesOfFileSource.add(filesoruce);
-            }
-        }
+			allFilesOfTemplate.add(templateViewModel);
+			for (FileSourceViewModel filesoruce : templateViewModel.fileSourceViewModels) {
+				allFilesOfFileSource.add(filesoruce);
+			}
+		}
 
 		for (int i = allFilesOfFileSource.size(); i > 0; i--) {
-            file = allFilesOfFileSource.get(i - 1);
+			file = allFilesOfFileSource.get(i - 1);
 
 			try {
 				FileDownload.downloadFile(file.blobUrl, downloadsPath);
@@ -275,41 +276,106 @@ public class MainActionFlow {
 
 	}
 
-	public void getGroupsData(String BaseUrl,String mobileNumber){
+	public void getGroupsData(String BaseUrl, String mobileNumber) {
 		String getGroups = BaseUrl + "/Group/getGroupsByMobileNumber/" + mobileNumber;
-        String getGroupString = ApiAccessing_obj.apiGetProcessing(getGroups);
-        System.out.println("getGroups" + " = " + getGroupString);
+		String getGroupString = ApiAccessing_obj.apiGetProcessing(getGroups);
+		System.out.println("getGroups" + " = " + getGroupString);
 
 		ListOfGroups = gson.fromJson(getGroupString, new TypeToken<List<GroupTemplateViewModel>>() {
-        }.getType());
+		}.getType());
 	}
 
-	public void sendMessage(List<TemplateViewModel> listOfTemplates, List<GroupTemplateViewModel> ListOfGroups,String mobileNumber){
+	public void sendMessage(String BaseUrlMain, String mobileNumber) throws InterruptedException, IOException {
 
+		for (GroupTemplateViewModel groupModel : ListOfGroups) {
+
+			try {
+				System.out.println(groupModel.name);
+				enter_whatsappGroupName(groupModel.name);
+
+			} catch (Exception e) {
+				enter_whatsappGroupName(groupModel.name);
+			}
+			clickSearchedGroup(groupModel.name);
+
+			option_Button();
+			clear_message();
+			clear_button();
+			option_Button();
+			group_info_click();
+			get_participantGroup();
+
+			for (int templateId : groupModel.templates) {
+
+				TemplateViewModel templateModel = GetTemplateById(listOfTemplates, templateId);
+				// Text message send ...
+				if (templateModel.messageType == 0) {
+					text_message_typeSpace(templateModel.text);
+
+					sendButton();
+
+					Thread.sleep(1000);
+					String payloadJsonString = jsonObject(groupModel.id, templateId, templateModel.clusterId,
+							mobileNumber);
+					System.out.println(payloadJsonString);
+					ApiAccessing_obj.apiPostProcessing(BaseUrlMain, payloadJsonString);
+
+					// SendingTextResource_obj.NavigateBackFormChat(driver);
+					// Thread.sleep(1000);
+					// Image and video send....
+				}
+
+				else {
+
+					for (FileSourceViewModel fileSourceMain : templateModel.fileSourceViewModels) {
+						// Audio File send ....
+						System.out.println(fileSourceMain.fileType);
+
+						System.out.println("Click_attach");
+						click_Attach();
+						System.out.println("Click_Gallery_attach");
+						attach_Gallery_Click();
+
+						for (FileSourceViewModel file : templateModel.fileSourceViewModels) {
+							UploadFileUsingAutoIt(file.fileName);
+
+							gallery_image_send();
+
+							String payloadJsonString = jsonObject(groupModel.id, templateId, templateModel.clusterId,
+									mobileNumber);
+							System.out.println(payloadJsonString);
+							ApiAccessing_obj.apiPostProcessing(BaseUrlMain, payloadJsonString);
+							Thread.sleep(1000);
+
+						}
+
+					}
+
+				}
+
+			}
+
+		}
+	}
+
+	private TemplateViewModel GetTemplateById(List<TemplateViewModel> listOfTemplates, int id) {
+
+		for (TemplateViewModel temp : listOfTemplates) {
+
+			if (temp.id == id) {
+				return temp;
+			}
+		}
+		return null;
 	}
 
 	public String jsonObject(int groupId, int templateMessageId, String clusterId, String mobileNumber) {
-        JsonObject empJsonObject = Json.createObjectBuilder().add("groupId", groupId)
-                .add("templateMessageId", templateMessageId).add("clusterId", clusterId)
-                .add("mobileNumber", mobileNumber).build();
-        return empJsonObject.toString();
+		JsonObject empJsonObject = Json.createObjectBuilder().add("groupId", groupId)
+				.add("templateMessageId", templateMessageId).add("clusterId", clusterId)
+				.add("mobileNumber", mobileNumber).build();
+		return empJsonObject.toString();
 
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	}
 
 	// End
 

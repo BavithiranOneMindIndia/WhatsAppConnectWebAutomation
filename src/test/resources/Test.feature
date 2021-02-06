@@ -14,6 +14,25 @@ Feature: Testing pricemesh
       | Whatsapp |
 
 
+
+@SendMessage
+  Scenario Outline: Lanuch Whatsapp web and send content
+    Given Open mobile number panel
+    Then  Accessing ConfigReaderFile
+    Then  Get ClusterId
+    Then  Get TemplateData and fileSource Download
+    Then  Get GroupsData
+    Given Launch chrome browser for Whatsapp web
+    Given Wait for "3" seconds
+    Then  SendMessage
+    Then  Quit from the Website
+    
+
+
+    Examples:
+      | Project  |
+      | Whatsapp |
+
   @WhatsappConnect
   Scenario Outline: Lanuch Whatsapp web and send content
     Given Open mobile number panel

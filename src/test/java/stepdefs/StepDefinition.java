@@ -65,11 +65,16 @@ public class StepDefinition extends MainActionFlow {
 		MNF.getGroupsData(BaseUrl, mobileNumber);
 	}
 
+	@Then("^SendMessage$")
+	public void sendMessage() throws InterruptedException, IOException {
+		MNF.sendMessage(BaseUrl, mobileNumber);
+	}
+
 	@Then("^Whatsappconnect Process$")
 	public void Whatsappcpnnect_Process() throws InterruptedException, IOException {
 
-		MNF.enter_whatsappGroupName();
-		MNF.clickSearchedGroup();
+		MNF.enter_whatsappGroupName(BaseUrl);
+		MNF.clickSearchedGroup(BaseUrl);
 		MNF.option_Button();
 		MNF.clear_message();
 		MNF.clear_button();
