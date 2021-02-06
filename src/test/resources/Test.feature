@@ -17,10 +17,14 @@ Feature: Testing pricemesh
   @WhatsappConnect
   Scenario Outline: Lanuch Whatsapp web and send content
     Given Open mobile number panel
+    Then  Accessing ConfigReaderFile
+    Then  Get ClusterId
+    Then  Get TemplateData and fileSource Download
+    Then  Get GroupsData
     Given Launch chrome browser for Whatsapp web
     Given Wait for "3" seconds
     Then  Whatsappconnect Process
-    Then Quit from the Website
+    Then  Quit from the Website
     
 
 

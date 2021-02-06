@@ -5,17 +5,15 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 
 import actiondefs.CommonActionFlow;
+import actiondefs.ConfigPropertiesFileReader;
 import actiondefs.MainActionFlow;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
 
 public class StepDefinition extends MainActionFlow {
 
@@ -24,11 +22,11 @@ public class StepDefinition extends MainActionFlow {
 	List<String> getlistTextValueinMainLabel;
 	String SearchedItem;
 	String mobileNumber;
+	String BaseUrl;
 	By graphMultipleValueGetter = By.xpath("//div[@class=\"graph-wrap\"]//ul//li");
-    String filename = "Testing.png";
+	String filename = "Testing.png";
 	MainActionFlow MNF = new MainActionFlow();
 	CommonActionFlow C = new CommonActionFlow();
-	
 
 	@Given("^Launch chrome browser for Whatsapp web$")
 	public void Launch_Chrome_Whatsapp() throws InterruptedException {
@@ -40,12 +38,36 @@ public class StepDefinition extends MainActionFlow {
 	public void open_Mobile_number_Panel() throws InterruptedException {
 		mobileNumber = C.OptionPanel();
 		System.out.println(mobileNumber);
-		//C.OptionPanel();
+		// C.OptionPanel();
+	}
+
+	@Then("^Accessing ConfigReaderFile$")
+	public void accessing_configReaderFile() {
+		ConfigPropertiesFileReader Properties = new ConfigPropertiesFileReader();
+		BaseUrl = Properties.getBaseUrl();
+		System.out.println(BaseUrl);
+	}
+
+	@Then("^Get ClusterId$")
+	public void get_clusterId() {
+		MNF.getClusterId(BaseUrl, mobileNumber);
+
+	}
+
+	@Then("^Get TemplateData and fileSource Download$")
+	public void get_TemplateData() {
+
+		MNF.getTemplateData(BaseUrl, mobileNumber);
+	}
+
+	@Then("^Get GroupsData$")
+	public void get_GroupsData() {
+		MNF.getGroupsData(BaseUrl, mobileNumber);
 	}
 
 	@Then("^Whatsappconnect Process$")
 	public void Whatsappcpnnect_Process() throws InterruptedException, IOException {
-		
+
 		MNF.enter_whatsappGroupName();
 		MNF.clickSearchedGroup();
 		MNF.option_Button();
@@ -54,8 +76,8 @@ public class StepDefinition extends MainActionFlow {
 		MNF.option_Button();
 		MNF.group_info_click();
 		MNF.get_participantGroup();
-		//MNF.text_message_typeSpace();
-		//MNF.sendButton();
+		// MNF.text_message_typeSpace();
+		// MNF.sendButton();
 		MNF.click_Attach();
 		MNF.attach_Gallery_Click();
 		MNF.UploadFileUsingAutoIt(filename);

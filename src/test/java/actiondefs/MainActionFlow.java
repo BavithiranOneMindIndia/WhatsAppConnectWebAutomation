@@ -1,7 +1,6 @@
 package actiondefs;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,9 +8,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import javax.json.Json;
+import javax.json.JsonObject;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -27,17 +32,34 @@ public class MainActionFlow {
 	public WebDriver driver;
 	String title;
 	String expectedWebsiteName = "Price Mesh";
-	String BaseUrl = "https://web.whatsapp.com/";
+	String BaseUrlWhatsapp = "https://web.whatsapp.com/";
+	String clusterUrl;
+	String cluserId;
+	String templateUrl;
+	String templateString;
+	String getGroups;
+	String getGroupString ;
+	FileSourceViewModel file;
 	String groupNameEnter = "Palani";
 	String path = System.getProperty("user.dir");
 	String fileUploadexePath = path + "\\FileUploadAutoIt\\FileUpload.exe\\";
 	String OpenexePath = path + "\\FileUploadAutoIt\\Open.exe";
+	String downloadsPath = path + "\\Downloads";
+
+	ApiAccessing ApiAccessing_obj = new ApiAccessing();
+	Gson gson = new Gson();
+	FileDownloadFlow FileDownload = new FileDownloadFlow();
 
 	List<String> getlistTextValueinGraphPage = new ArrayList<String>();
 	List<String> getlistTextValueinMainLabel = new ArrayList<String>();
+	List<GroupTemplateViewModel> ListOfGroups;
+    List<TemplateViewModel> listOfTemplates;
 
 	List<WebElement> selectedSingleSizeList = new ArrayList<WebElement>();
 	List<WebElement> selectedSizeList = new ArrayList<WebElement>();
+
+	List<FileSourceViewModel> allFilesOfFileSource = new ArrayList<FileSourceViewModel>();
+    List<TemplateViewModel> allFilesOfTemplate = new ArrayList<TemplateViewModel>();
 
 	boolean isEqual;
 
@@ -100,7 +122,7 @@ public class MainActionFlow {
 		System.setProperty("webdriver.chrome.driver", "C://ChromeDriver_test//chromedriver.exe");
 		driver = new ChromeDriver();
 
-		driver.get(BaseUrl);
+		driver.get(BaseUrlWhatsapp);
 		title = driver.getTitle();
 		TimeUnit.SECONDS.sleep(3);
 		driver.manage().window().maximize();
@@ -215,6 +237,80 @@ public class MainActionFlow {
 		System.out.println(ParticipantValue);
 	}
 
+	public void getClusterId(String BaseUrl,String mobileNumber){
+		
+		clusterUrl = BaseUrl + "/GroupAdmin/getClusterId/" + mobileNumber;
+        cluserId = ApiAccessing_obj.apiGetProcessing(clusterUrl);
+        System.out.println("ClusterId" + " = " + cluserId);
+
+	}
+
+	public void getTemplateData(String BaseUrl,String mobileNumber){
+
+		String templateUrl = BaseUrl + "/Template/getByMobileNumber/" + mobileNumber;
+        String templateString = ApiAccessing_obj.apiGetProcessing(templateUrl);
+		System.out.println("templateString" + " = " + templateString);
+
+		listOfTemplates = gson.fromJson(templateString, new TypeToken<List<TemplateViewModel>>() {
+        }.getType());
+
+		for (TemplateViewModel templateViewModel : listOfTemplates) {
+
+            allFilesOfTemplate.add(templateViewModel);
+            for (FileSourceViewModel filesoruce : templateViewModel.fileSourceViewModels) {
+                allFilesOfFileSource.add(filesoruce);
+            }
+        }
+
+		for (int i = allFilesOfFileSource.size(); i > 0; i--) {
+            file = allFilesOfFileSource.get(i - 1);
+
+			try {
+				FileDownload.downloadFile(file.blobUrl, downloadsPath);
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+
+		}
+
+	}
+
+	public void getGroupsData(String BaseUrl,String mobileNumber){
+		String getGroups = BaseUrl + "/Group/getGroupsByMobileNumber/" + mobileNumber;
+        String getGroupString = ApiAccessing_obj.apiGetProcessing(getGroups);
+        System.out.println("getGroups" + " = " + getGroupString);
+
+		ListOfGroups = gson.fromJson(getGroupString, new TypeToken<List<GroupTemplateViewModel>>() {
+        }.getType());
+	}
+
+	public void sendMessage(List<TemplateViewModel> listOfTemplates, List<GroupTemplateViewModel> ListOfGroups,String mobileNumber){
+
+	}
+
+	public String jsonObject(int groupId, int templateMessageId, String clusterId, String mobileNumber) {
+        JsonObject empJsonObject = Json.createObjectBuilder().add("groupId", groupId)
+                .add("templateMessageId", templateMessageId).add("clusterId", clusterId)
+                .add("mobileNumber", mobileNumber).build();
+        return empJsonObject.toString();
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	// End
 
 	public void getChatName() throws InterruptedException {
@@ -267,7 +363,7 @@ public class MainActionFlow {
 		System.setProperty("webdriver.chrome.driver", "C://ChromeDriver_test//chromedriver.exe");
 		driver = new ChromeDriver();
 
-		driver.get(BaseUrl);
+		driver.get(BaseUrlWhatsapp);
 		title = driver.getTitle();
 		TimeUnit.SECONDS.sleep(3);
 		driver.manage().window().maximize();
