@@ -327,16 +327,16 @@ public class MainActionFlow {
 
 				else {
 
-					for (FileSourceViewModel fileSourceMain : templateModel.fileSourceViewModels) {
+					//for (FileSourceViewModel fileSourceMain : templateModel.fileSourceViewModels) {
 						// Audio File send ....
-						System.out.println(fileSourceMain.fileType);
-
-						System.out.println("Click_attach");
-						click_Attach();
-						System.out.println("Click_Gallery_attach");
-						attach_Gallery_Click();
+						//System.out.println(fileSourceMain.fileType);
 
 						for (FileSourceViewModel file : templateModel.fileSourceViewModels) {
+							System.out.println("Click_attach");
+							click_Attach();
+							System.out.println("Click_Gallery_attach");
+							attach_Gallery_Click();
+
 							UploadFileUsingAutoIt(file.fileName);
 
 							gallery_image_send();
@@ -345,11 +345,11 @@ public class MainActionFlow {
 									mobileNumber);
 							System.out.println(payloadJsonString);
 							ApiAccessing_obj.apiPostProcessing(BaseUrlMain, payloadJsonString);
-							Thread.sleep(1000);
+							Thread.sleep(2000);
 
 						}
 
-					}
+					//}
 
 				}
 

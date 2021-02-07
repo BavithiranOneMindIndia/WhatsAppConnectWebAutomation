@@ -13,6 +13,8 @@ import org.apache.http.util.EntityUtils;
 
 public class ApiAccessing {
 
+    String authorization =  "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ilg1ZVhrNHh5b2pORnVtMWtsMll0djhkbE5QNC1jNTdkTzZRR1RWQndhTmsifQ.eyJpc3MiOiJodHRwczovL3N0YWdlbWtzdGVhbS5iMmNsb2dpbi5jb20vNTNiNzg2OTgtYzA3YS00YTJlLTgzZGItY2ExNDNjYjFhMmE3L3YyLjAvIiwiZXhwIjoxNjEyNzY0MTU4LCJuYmYiOjE2MTI2Nzc3NTgsImF1ZCI6ImViYTRmMDVlLTczMzItNGIzOS1hZWYwLWY3NzM4MDkwYjdjZCIsInN1YiI6IjE4MzQ1NmRjLTZiY2EtNDVlNi05MjMzLTUwNmYzMmQ3ZThmNSIsImV4dGVuc2lvbl9BcHBsaWNhdGlvbklkIjoiZWJhNGYwNWUtNzMzMi00YjM5LWFlZjAtZjc3MzgwOTBiN2NkIiwibmFtZSI6IkJhdmlFZGl0b3IiLCJleHRlbnNpb25fUm9sZXMiOiJFZGl0b3IiLCJleHRlbnNpb25fVGVuYW50SWQiOiI4ZjcwZGEyZS03ZTAxLTRlNzAtYWE0MS05Njk2YTMzYThjNGYiLCJ0ZnAiOiJCMkNfMV9zdGFnZV9ta3N0ZW1fc2lnbnVwc2lnbmluIiwibm9uY2UiOiJkNGY0NjJiYWFlYmU0MzQ0YWNhZDE5ODlmMjYzN2EzZSIsInNjcCI6InJlYWQiLCJhenAiOiI5MzBkNzIzZi02Y2UwLTQ2ZTAtYmYxMC1hNmQxMjA0OWY1YTAiLCJ2ZXIiOiIxLjAiLCJpYXQiOjE2MTI2Nzc3NTh9.pnrdy3G_zA4J1OMxemkXRRlalPlh7B1yVK_lVnxhueDvt3h5_AoQ_YkgYBpupf4tZuOgI92hMyfDTVXnRLOYPOM1MbbihQkQETCE-7x8hFtfPcXjfGBL1gsKS-mpBDneCwVTi4L8nSlD624Apz52gguu7akjtumEbWRTqjqMX-mGJiWKLvC8i0wDmS310Rk8vEfH5nPBOTyrYF7YZHSuXXeP55VSGCYkQX34f5lmr6PMuWOcouMZ2eA237CbcGg5jU7WH_9hzWTgRmkeO-9Zoh3GNWufSaualDApgMSANam0loE4fV2HCYzyMO9wR9rakckdRkp4JgZNgLxZLsGd4w";
+
     //LogGeneratorClass LogGeneratorClass_obj = new LogGeneratorClass();
 
     public String apiGetProcessing(String apiUrl) {
@@ -24,7 +26,7 @@ public class ApiAccessing {
 
             // Set the API media type in http accept header
             getRequest.addHeader("accept", "application/json");
-            getRequest.addHeader("Authorization", "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ilg1ZVhrNHh5b2pORnVtMWtsMll0djhkbE5QNC1jNTdkTzZRR1RWQndhTmsifQ.eyJpc3MiOiJodHRwczovL3N0YWdlbWtzdGVhbS5iMmNsb2dpbi5jb20vNTNiNzg2OTgtYzA3YS00YTJlLTgzZGItY2ExNDNjYjFhMmE3L3YyLjAvIiwiZXhwIjoxNjEyNjc0MjI4LCJuYmYiOjE2MTI1ODc4MjgsImF1ZCI6ImViYTRmMDVlLTczMzItNGIzOS1hZWYwLWY3NzM4MDkwYjdjZCIsInN1YiI6IjI5NzljN2E1LThmNDYtNGMzZi1hODVhLTZjY2YyYTJiZjRjOSIsImV4dGVuc2lvbl9BcHBsaWNhdGlvbklkIjoiZWJhNGYwNWUtNzMzMi00YjM5LWFlZjAtZjc3MzgwOTBiN2NkIiwibmFtZSI6IkJhdmlDb250ZW50Q3JlYXRvciIsImV4dGVuc2lvbl9Sb2xlcyI6IkNvbnRlbnRDcmVhdG9yIiwiZXh0ZW5zaW9uX1RlbmFudElkIjoiOGY3MGRhMmUtN2UwMS00ZTcwLWFhNDEtOTY5NmEzM2E4YzRhLDhmNzBkYTJlLTdlMDEtNGU3MC1hYTQxLTk2OTZhMzNhOGM0ZiIsInRmcCI6IkIyQ18xX3N0YWdlX21rc3RlbV9zaWdudXBzaWduaW4iLCJub25jZSI6IjFhNWQ0MTM0MzUwODRkNTU5YzgyOTFkYzBhYjFlNTU5Iiwic2NwIjoicmVhZCIsImF6cCI6IjkzMGQ3MjNmLTZjZTAtNDZlMC1iZjEwLWE2ZDEyMDQ5ZjVhMCIsInZlciI6IjEuMCIsImlhdCI6MTYxMjU4NzgyOH0.Fq1_2xd6H4fGI7IBiVZ_UoxGJmdNRXm4xeshZT6c1I22e4X5_ksPluFSY6uDVNU18Uq8JeYJYnqli6aPWO7lraErrDNzu3BaWcBPNUyjIFCjewpbKyzWGT-vlKtUB7nGMx_1lDAOHKWbbYZxBQKjlbh0T0rUa85uSysmTirbldoyXv0U1Ent8kFmurRd3uEqNZZ0uInUMjap151QAff1qzHja0_CUdfFwmxfm7aRv4iBcMB3pExQhC3RRTfSifaeBX-DYfm17PnFE7HwUp6pQUkqeUopYVtBqtAGOMRdgIxmDUBc80ztEHwGdh-YFk9Ux4ryWUaDAib0gXuC690XBA");
+            getRequest.addHeader("Authorization", authorization);
 
             HttpResponse response = httpClient.execute(getRequest);
 
@@ -55,6 +57,8 @@ public class ApiAccessing {
 
             StringEntity input = new StringEntity(jsonBody);
             input.setContentType("application/json");
+            postRequest.addHeader("accept", "application/json");
+            postRequest.addHeader("Authorization",authorization);
             postRequest.setEntity(input);
 
             HttpResponse response = httpClient.execute(postRequest);
