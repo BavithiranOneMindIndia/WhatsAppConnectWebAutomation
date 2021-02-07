@@ -42,6 +42,7 @@ public class MainActionFlow {
 	FileSourceViewModel file;
 	String groupNameEnter = "Palani";
 	String path = System.getProperty("user.dir");
+	String chromeDiverPath = path + "\\Driver\\chromedriver.exe";
 	String fileUploadexePath = path + "\\FileUploadAutoIt\\FileUpload.exe\\";
 	String OpenexePath = path + "\\FileUploadAutoIt\\Open.exe";
 	String downloadsPath = path + "\\Downloads";
@@ -119,7 +120,7 @@ public class MainActionFlow {
 		System.out.println("Launching Started .......... ");
 		// SS.sendMail();
 
-		System.setProperty("webdriver.chrome.driver", "C://ChromeDriver_test//chromedriver.exe");
+		System.setProperty("webdriver.chrome.driver", chromeDiverPath);
 		driver = new ChromeDriver();
 
 		driver.get(BaseUrlWhatsapp);
@@ -183,7 +184,8 @@ public class MainActionFlow {
 
 	public void UploadFileUsingAutoIt(String filename) throws InterruptedException, IOException {
 		TimeUnit.SECONDS.sleep(1);
-		Runtime.getRuntime().exec(fileUploadexePath + " " + filename);
+		System.out.println(downloadsPath + "\\"+ filename);
+		Runtime.getRuntime().exec(fileUploadexePath + " " + downloadsPath + "\\"+ filename);
 		// TimeUnit.SECONDS.sleep(1);
 		// Runtime.getRuntime().exec("D:\\FileUploadAutoIt\\FileUpload.exe\\" + " " +
 		// "Add.png");
