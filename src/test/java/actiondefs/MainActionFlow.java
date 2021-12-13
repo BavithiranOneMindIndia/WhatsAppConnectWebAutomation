@@ -45,6 +45,7 @@ public class MainActionFlow {
 	String chromeDiverPath = path + "\\Driver\\chromedriver.exe";
 	String fileUploadexePath = path + "\\FileUploadAutoIt\\FileUpload.exe\\";
 	String OpenexePath = path + "\\FileUploadAutoIt\\Open.exe";
+	String completedPath = path + "\\FileUploadAutoIt\\completed.exe";
 	String downloadsPath = path + "\\Downloads";
 
 	ApiAccessing ApiAccessing_obj = new ApiAccessing();
@@ -601,6 +602,10 @@ public class MainActionFlow {
 
 	public void QuitBrowser() {
 		driver.close();
+	}
+
+	public void CompletedPopup() throws IOException{
+		Runtime.getRuntime().exec(OpenexePath);
 	}
 
 }
