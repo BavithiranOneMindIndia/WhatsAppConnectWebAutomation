@@ -1,5 +1,7 @@
 package actiondefs;
 
+import java.io.IOException;
+
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -38,5 +40,25 @@ public class CommonActionFlow extends JFrame {
         f.setLayout(null);
         f.setVisible(true);
     }
+
+    public void startServer() {
+		Runtime runtime = Runtime.getRuntime();
+		try {
+			runtime.exec("cmd.exe /c start cmd.exe /k \"appium -a 127.0.0.1 -p 4723\"");
+			Thread.sleep(8000);
+		} catch (IOException | InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void stopServer() {
+		Runtime runtime = Runtime.getRuntime();
+		try {
+			runtime.exec("taskkill /F /IM node.exe");
+			runtime.exec("taskkill /F /IM cmd.exe");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 }
