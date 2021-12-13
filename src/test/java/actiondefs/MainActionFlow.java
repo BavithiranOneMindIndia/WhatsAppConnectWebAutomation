@@ -103,16 +103,15 @@ public class MainActionFlow {
 	By panelSide = By.xpath("//div[@id=\'pane-side\']");
 	By ScrollUpto = By.xpath("//span[@title=\'DMK4 Anna Nagar 4\']");
 	By groupNameSelector = By.xpath("//*[@id=\"side\"]/div[1]/div/label/div/div[2]");
-	By textmessageplace = By.xpath("//*[@id=\"main\"]/footer/div[1]/div[2]/div/div[2]");
-	By send = By.xpath("//*[@id=\"main\"]/footer/div[1]/div[3]");
+	By textmessageplace = By.xpath("//*[@title='Type a message']");
+	By send = By.xpath("/html[1]/body[1]/div[1]/div[1]/div[1]/div[4]/div[1]/footer[1]/div[1]/div[1]/span[2]/div[1]/div[2]/div[2]");
 	By attachGallery = By.xpath("//span[@data-testid='attach-image']");
 	By attach = By.xpath("//span[@data-testid='clip']");
 	By gallerySend = By.xpath("//span[@data-testid='send']");
 	By optionButton = By.xpath("//div[@id='main']//header//div//div//div//div[@title='Menu']");
-	By clearMessage = By.xpath("//div[@title='Clear messages']");
-	By groupinfo = By.xpath("//div[@title='Group info']");
-	By participantCount = By.xpath(
-			"//body/div[@id='app']/div/div/div/div/span/div/span/div/div/div/div[5]/div[1]/div[1]/div[1]/div[1]/span[1]");
+	By clearMessage = By.xpath("//div[text()='Clear messages']");
+	By groupinfo = By.xpath("//div[text()='Group info']");
+	By participantCount = By.xpath("//button[@type='button']");
 	By clearButton = By.xpath("//div[contains(text(),'Clear')]");
 	// By commonChatHeaderClick = By.xpath("//*[@id=\"main\"]/header/div[1]");
 
@@ -146,8 +145,8 @@ public class MainActionFlow {
 		try {
 			WebDriverWait wait = new WebDriverWait(driver, 5000);
 			wait.until(ExpectedConditions.visibilityOfElementLocated(
-					By.xpath("//div[@role='option']//div//div//div//div//span[@title='" + groupName + "']")));
-			driver.findElement(By.xpath("//div[@role='option']//div//div//div//div//span[@title='" + groupName + "']"))
+					By.xpath("//div[@role='grid']//div//div//div//div//div//div[@Class='zoWT4']//span[@title='" + groupName + "']")));
+			driver.findElement(By.xpath("//div[@role='grid']//div//div//div//div//div//div[@Class='zoWT4']//span[@title='" + groupName + "']"))
 					.click();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
